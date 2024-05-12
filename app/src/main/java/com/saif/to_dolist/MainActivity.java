@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,InsertNoteActivity.class);
+                intent.putExtra("noteType","addNote");
                 startActivityForResult(intent,1);
             }
         });
@@ -73,7 +74,20 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                listViewModel.delete(noteListAdapter.getCurrentList().get(viewHolder.getAdapterPosition()));
+
+                if (direction == ItemTouchHelper.RIGHT){
+                    listViewModel.delete(noteListAdapter.getCurrentList().get(viewHolder.getAdapterPosition()));
+                    Toast.makeText(MainActivity.this, "Note Deleted", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(MainActivity.this,InsertNoteActivity.class);
+                    intent.putExtra("noteType","update");
+                    intent.putExtra("title",noteListAdapter.getCurrentList().get(viewHolder.getAdapterPosition()).getTitle());
+                    intent.putExtra("description",noteListAdapter.getCurrentList().get(viewHolder.getAdapterPosition()).getDescription());
+                    intent.putExtra("id",noteListAdapter.getCurrentList().get(viewHolder.getAdapterPosition()).getId());
+                    startActivityForResult(intent,3);
+                    Toast.makeText(MainActivity.this, "Updating", Toast.LENGTH_SHORT).show();
+                }
+
             }
         }).attachToRecyclerView(rv1);
     }
@@ -87,6 +101,13 @@ public class MainActivity extends AppCompatActivity {
             NotesModel notesModel = new NotesModel(title,description);
             listViewModel.insert(notesModel);
             Toast.makeText(this, "Note Added", Toast.LENGTH_SHORT).show();
+        } else if (requestCode == 3) {
+            String title = data.getStringExtra("title");
+            String description = data.getStringExtra("description");
+            NotesModel notesModel = new NotesModel(title,description);
+            notesModel.setId(data.getIntExtra("id",0));
+            listViewModel.update(notesModel);
+            Toast.makeText(this, "Note Updated", Toast.LENGTH_SHORT).show();
         }
     }
 }

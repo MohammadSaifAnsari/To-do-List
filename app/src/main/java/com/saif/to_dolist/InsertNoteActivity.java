@@ -31,16 +31,38 @@ public class InsertNoteActivity extends AppCompatActivity {
         insTitle = findViewById(R.id.insertTitle);
         insDes = findViewById(R.id.insertDescription);
 
-        insertBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("title",insTitle.getText().toString());
-                intent.putExtra("description",insDes.getText().toString());
-                setResult(RESULT_OK,intent);
-                finish();
-            }
-        });
+        String type = getIntent().getStringExtra("noteType");
+        if (type.equals("update")){
+            setTitle("Update");
+            insTitle.setText(getIntent().getStringExtra("title"));
+            insDes.setText(getIntent().getStringExtra("description"));
+            int id = getIntent().getIntExtra("id",0);
+            insertBut.setText("Update");
+            insertBut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.putExtra("title",insTitle.getText().toString());
+                    intent.putExtra("description",insDes.getText().toString());
+                    intent.putExtra("id",id);
+                    setResult(RESULT_OK,intent);
+                    finish();
+                }
+            });
+        }else {
+            setTitle("Add Note");
+            insertBut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.putExtra("title",insTitle.getText().toString());
+                    intent.putExtra("description",insDes.getText().toString());
+                    setResult(RESULT_OK,intent);
+                    finish();
+                }
+            });
+        }
+
     }
 
     @Override
