@@ -42,4 +42,10 @@ public class InsertNoteActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(InsertNoteActivity.this,MainActivity.class));
+    }
 }

@@ -6,17 +6,24 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.saif.to_dolist.Adapter.NoteListAdapter;
 import com.saif.to_dolist.Database.NotesModel;
 import com.saif.to_dolist.Model.ListViewModel;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +52,30 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent,1);
             }
         });
+
+        rv1.setLayoutManager(new LinearLayoutManager(this));
+        rv1.setHasFixedSize(true);
+        NoteListAdapter noteListAdapter = new NoteListAdapter();
+        rv1.setAdapter(noteListAdapter);
+
+        listViewModel.getAllData().observe(this, new Observer<List<NotesModel>>() {
+            @Override
+            public void onChanged(List<NotesModel> notesModels) {
+                noteListAdapter.submitList(notesModels);
+            }
+        });
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                listViewModel.delete(noteListAdapter.getCurrentList().get(viewHolder.getAdapterPosition()));
+            }
+        }).attachToRecyclerView(rv1);
     }
 
     @Override
