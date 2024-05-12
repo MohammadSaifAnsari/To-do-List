@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@color/sec"
     tools:context=".SplashActivity">
 
     <LinearLayout
@@ -26,6 +26,7 @@
             android:textStyle="bold"
             android:gravity="center"
             android:textSize="25sp"
+            android:layout_marginTop="10dp"
             android:text="To-Do List"
             android:layout_alignBottom="@+id/splash_img">
         </TextView>

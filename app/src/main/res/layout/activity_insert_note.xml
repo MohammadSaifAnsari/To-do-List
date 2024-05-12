@@ -1,37 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="15dp"
-    android:background="@drawable/background"
-    tools:context=".InsertNoteActivity"
-    android:weightSum="3">
-    <EditText
-        android:id="@+id/insertTitle"
+    tools:context=".InsertNoteActivity">
+    <LinearLayout
+        android:id="@+id/ll1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Enter Title"
-        android:layout_margin="10dp">
-    </EditText>
-    <EditText
-        android:id="@+id/insertDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Enter Description"
-        android:layout_weight="2">
-    </EditText>
-    <Button
+        android:background="#1A1A1B"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/back_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_arrow_back_24"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="5dp">
+        </ImageView>
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#1A1A1B">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarInsert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:titleTextColor="@color/white">
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </LinearLayout>
+    <LinearLayout
+         android:id="@+id/ll2"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:padding="15dp"
+        android:background="@color/prim"
+         android:layout_below="@+id/ll1"
+         android:orientation="vertical">
+         <EditText
+             android:id="@+id/insertTitle"
+             android:layout_width="match_parent"
+             android:layout_height="80dp"
+             android:layout_marginTop="20dp"
+             android:hint="Enter Title"
+             android:textColorHint="#E4E1E1"
+             android:padding="15dp"
+             android:background="@drawable/custom_edit_text_cut"
+             android:textColor="@color/white"
+             android:layout_margin="10dp">
+         </EditText>
+         <EditText
+             android:id="@+id/insertDescription"
+             android:layout_width="match_parent"
+             android:layout_height="300dp"
+             android:layout_margin="10dp"
+             android:layout_marginTop="20dp"
+             android:textColor="@color/white"
+             android:padding="15dp"
+             android:gravity="start"
+             android:textColorHint="#E4E1E1"
+             android:background="@drawable/custom_edit_text_cut"
+             android:hint="Enter Description">
+         </EditText>
+
+     </LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/insertButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save"
-        android:backgroundTint="#453FE8">
-    </Button>
+        android:backgroundTint="@color/sec"
+        android:src="@drawable/tick"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="25dp">
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
-</LinearLayout>
+
+
+</RelativeLayout>

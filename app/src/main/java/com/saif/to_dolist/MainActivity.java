@@ -1,5 +1,6 @@
 package com.saif.to_dolist;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -30,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView rv1;
     FloatingActionButton floatingActionButton;
     private ListViewModel listViewModel;
+    NoteListAdapter noteListAdapter = new NoteListAdapter();
+
+    Toolbar toolbarMain;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,16 +47,21 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        toolbarMain = findViewById(R.id.toolbarMain);
+        setSupportActionBar(toolbarMain);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("All Lists");
+
         floatingActionButton = findViewById(R.id.add_floating);
         rv1 = findViewById(R.id.recycler_view);
-        listViewModel = new ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory.
+        listViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.
                 getInstance(this.getApplication())).get(ListViewModel.class);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,InsertNoteActivity.class);
-                intent.putExtra("noteType","addNote");
-                startActivityForResult(intent,1);
+                Intent intent = new Intent(MainActivity.this, InsertNoteActivity.class);
+                intent.putExtra("noteType", "addNote");
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -66,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT) {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
@@ -75,16 +86,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
-                if (direction == ItemTouchHelper.RIGHT){
+                if (direction == ItemTouchHelper.RIGHT) {
                     listViewModel.delete(noteListAdapter.getCurrentList().get(viewHolder.getAdapterPosition()));
                     Toast.makeText(MainActivity.this, "Note Deleted", Toast.LENGTH_SHORT).show();
-                }else{
-                    Intent intent = new Intent(MainActivity.this,InsertNoteActivity.class);
-                    intent.putExtra("noteType","update");
-                    intent.putExtra("title",noteListAdapter.getCurrentList().get(viewHolder.getAdapterPosition()).getTitle());
-                    intent.putExtra("description",noteListAdapter.getCurrentList().get(viewHolder.getAdapterPosition()).getDescription());
-                    intent.putExtra("id",noteListAdapter.getCurrentList().get(viewHolder.getAdapterPosition()).getId());
-                    startActivityForResult(intent,3);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, InsertNoteActivity.class);
+                    intent.putExtra("noteType", "update");
+                    intent.putExtra("title", noteListAdapter.getCurrentList().get(viewHolder.getAdapterPosition()).getTitle());
+                    intent.putExtra("description", noteListAdapter.getCurrentList().get(viewHolder.getAdapterPosition()).getDescription());
+                    intent.putExtra("id", noteListAdapter.getCurrentList().get(viewHolder.getAdapterPosition()).getId());
+                    startActivityForResult(intent, 3);
                     Toast.makeText(MainActivity.this, "Updating", Toast.LENGTH_SHORT).show();
                 }
 
@@ -95,19 +106,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1){
+        if (requestCode == 1) {
             String title = data.getStringExtra("title");
             String description = data.getStringExtra("description");
-            NotesModel notesModel = new NotesModel(title,description);
+            NotesModel notesModel = new NotesModel(title, description);
             listViewModel.insert(notesModel);
             Toast.makeText(this, "Note Added", Toast.LENGTH_SHORT).show();
         } else if (requestCode == 3) {
             String title = data.getStringExtra("title");
             String description = data.getStringExtra("description");
-            NotesModel notesModel = new NotesModel(title,description);
-            notesModel.setId(data.getIntExtra("id",0));
+            NotesModel notesModel = new NotesModel(title, description);
+            notesModel.setId(data.getIntExtra("id", 0));
             listViewModel.update(notesModel);
             Toast.makeText(this, "Note Updated", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+        //Exit app on back pressed
+        Intent a = new Intent(Intent.ACTION_MAIN); //Launches home screen
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+
     }
 }
