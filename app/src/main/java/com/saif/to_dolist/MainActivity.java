@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
         rv1.setLayoutManager(new LinearLayoutManager(this));
         rv1.setHasFixedSize(true);
-        NoteListAdapter noteListAdapter = new NoteListAdapter();
         rv1.setAdapter(noteListAdapter);
 
         listViewModel.getAllData().observe(this, new Observer<List<NotesModel>>() {
@@ -118,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
             NotesModel notesModel = new NotesModel(title, description);
             notesModel.setId(data.getIntExtra("id", 0));
             listViewModel.update(notesModel);
+            noteListAdapter.notifyDataSetChanged();
             Toast.makeText(this, "Note Updated", Toast.LENGTH_SHORT).show();
         }
     }

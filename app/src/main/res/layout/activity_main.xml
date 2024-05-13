@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/prim"
     tools:context=".MainActivity">
     <LinearLayout
         android:id="@+id/ll3"
@@ -35,7 +34,8 @@
         android:layout_height="match_parent"
         android:paddingRight="15dp"
         android:paddingLeft="15dp"
-        android:layout_below="@+id/ll3">
+        android:layout_below="@+id/ll3"
+        android:background="@color/prim">
     </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

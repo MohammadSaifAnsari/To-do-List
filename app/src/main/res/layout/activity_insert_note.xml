@@ -47,19 +47,23 @@
              android:id="@+id/insertTitle"
              android:layout_width="match_parent"
              android:layout_height="80dp"
-             android:layout_marginTop="20dp"
+             android:layout_marginTop="50dp"
              android:hint="Enter Title"
              android:textColorHint="#E4E1E1"
              android:padding="15dp"
              android:background="@drawable/custom_edit_text_cut"
              android:textColor="@color/white"
-             android:layout_margin="10dp">
+             android:layout_marginRight="10dp"
+             android:layout_marginLeft="10dp"
+             android:layout_marginBottom="15dp">
          </EditText>
          <EditText
              android:id="@+id/insertDescription"
              android:layout_width="match_parent"
              android:layout_height="300dp"
-             android:layout_margin="10dp"
+             android:layout_marginRight="10dp"
+             android:layout_marginLeft="10dp"
+             android:layout_marginBottom="15dp"
              android:layout_marginTop="20dp"
              android:textColor="@color/white"
              android:padding="15dp"
